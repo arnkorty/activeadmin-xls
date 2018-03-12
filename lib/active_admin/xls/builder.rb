@@ -300,7 +300,7 @@ module ActiveAdmin
         def localized_name(i18n_scope = nil)
           return name.to_s.titleize unless i18n_scope
           if i18n_scope.respond_to?(:human_attribute_name)
-            i18n_scope.human_attribute_name
+            i18n_scope.human_attribute_name(name)
           else
             I18n.t name, scope: i18n_scope
           end
