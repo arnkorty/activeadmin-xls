@@ -299,7 +299,11 @@ module ActiveAdmin
         # @see I18n
         def localized_name(i18n_scope = nil)
           return name.to_s.titleize unless i18n_scope
-          I18n.t name, scope: i18n_scope
+          if i18n_scope.respond_to?(:human_attribute_name)
+            i18n_scope.human_attribute_name
+          else
+            I18n.t name, scope: i18n_scope
+          end
         end
       end
 
@@ -350,7 +354,7 @@ module ActiveAdmin
       def header_data_for(collection)
         resource = collection.first || @resource_class.new
         columns.map do |column|
-          column.localized_name(i18n_scope) if in_scope(resource, column)
+          column.localized_name(i18n_scope || @resource_class) if in_scope(resource, column)
         end.compact
       end
 
