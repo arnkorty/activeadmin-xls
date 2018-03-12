@@ -407,7 +407,14 @@ module ActiveAdmin
         when Hash
           column.each_value { |values| fill_row(row, values) }
         when Array
-          column.each { |value| fill_row(row, value) }
+          column.each { |value|
+            if value.is_a? TrueClass
+              value = '是'
+            elsif value.is_a? FalseClass
+              value = '否'
+            end
+            fill_row(row, value)
+          }
         else
           # raise ArgumentError,
           #       "column #{column} has an invalid class (#{ column.class })"
